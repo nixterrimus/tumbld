@@ -2,6 +2,12 @@
 
 download_site()
 {
+	# Go to subfolder for organized downloading
+	if [ ! -d "$site" ]; then
+		mkdir $site
+	fi
+	cd $site
+	
 	# Download the images using wget
 	wget --quiet -H -Dmedia.tumblr.com,$site.tumblr.com -r -R "*avatar*" -A "[0-9]" \
 	 -A "*index*" -A jpeg,jpg,bmp,gif,png --level=10 -nd -nc -erobots=off \
@@ -10,11 +16,7 @@ download_site()
 	# Clean up pages needed to find images
 	rm -f 1 2 3 4 5 6 7 8 9 index.html
 	
-	# Move images to subfolder
-	if [ ! -d "$site" ]; then
-		mkdir $site
-	fi
-	mv tumblr_*.{jpeg,jpg,bmp,gif,png} $site/
+	cd ../
 }
 
 
@@ -30,6 +32,7 @@ then
 	# Download a site of tumblrs using a file as source
 	cat $1 | while read site; do
 			if [[ $site != \#* ]]; then
+				echo "downloading site: $site"
 				download_site $site
 			fi
 	done
