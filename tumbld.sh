@@ -9,6 +9,12 @@ download_site()
 	
 	# Clean up pages needed to find images
 	rm -f 1 2 3 4 5 6 7 8 9 index.html
+	
+	# Move images to subfolder
+	if [ ! -d "$site" ]; then
+		mkdir $site
+	fi
+	mv tumblr_*.{jpeg,jpg,bmp,gif,png} $site/
 }
 
 
