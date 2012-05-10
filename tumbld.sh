@@ -32,7 +32,6 @@ then
 	# Download a site of tumblrs using a file as source
 	cat $1 | while read site; do
 			if [[ $site != \#* ]]; then
-				echo "downloading site: $site"
 				download_site $site
 			fi
 	done
