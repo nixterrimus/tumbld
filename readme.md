@@ -27,3 +27,5 @@ The file should contain a list of tumblr blog name with one on each line.  For e
 # License
 
 tumblr is written by [Nick Rowe](http://dcxn.com) and is available under an MIT license.
+
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/33892d7fb7e63cecbc426978a26aada9 "githalytics.com")](http://githalytics.com/nixterrimus/tumbld)
