@@ -64,7 +64,7 @@ then
 fi
 
 # Act accordingly
-if [ -e ${Sites[0]} ]
+if [ -f ${Sites[0]} ]
 then
   # Download a site of tumblrs using a file as source
   cat ${Sites[0]} | while read site; do
