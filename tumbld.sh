@@ -2,9 +2,11 @@
 
 download_site()
 {
-  if [ $USE_SUBFOLDERS ]; then
+  if [ $USE_SUBFOLDERS ]
+  then
 	  # Go to subfolder for organized downloading
-	  if [ ! -d "$site" ]; then
+	  if [ ! -d "$site" ]
+    then
 		  mkdir $site
 	  fi
 	  cd $site
@@ -18,7 +20,8 @@ download_site()
 	# Clean up pages needed to find images
 	rm -f 1 2 3 4 5 6 7 8 9 index.html
 	
-  if [ $USE_SUBFOLDERS ]; then
+  if [ $USE_SUBFOLDERS ]
+  then
     cd ../
   fi
 }
