@@ -18,6 +18,8 @@ The file should contain a list of tumblr blog name with one on each line.  For e
 
     architectureblog
     drawingarchitecture
+
+If desired, pass in `-s` as the first argument and the photos from these blogs will be placed into subfolders.
     
 # Common Problems
 
