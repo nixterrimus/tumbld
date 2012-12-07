@@ -19,6 +19,12 @@ download_site()
 	cd ../
 }
 
+usage()
+{
+	echo "download images from tumblr"
+  echo "Usage: `basename $0` [-s] file"
+  exit $E_BADARGS
+}
 
 if [ $# -ne 1 ]
 then
