@@ -23,7 +23,7 @@ If desired, pass in `-s` as the first argument and the photos from these blogs w
     
 # Common Problems
 
-- Script isn't executable? Try this: `chmod /path/to/tumbld.sh`
+- Script isn't executable? Try this: `chmod +x /path/to/tumbld.sh`
 - wget ins't installed? `apt-get intall wget` (debian/ubuntu) or `brew install wget` (osx)
 
 # License
