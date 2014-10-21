@@ -28,6 +28,6 @@ If desired, pass in `-s` as the first argument and the photos from these blogs w
 
 # License
 
-tumblr is written by [Nick Rowe](http://dcxn.com) and is available under an MIT license.
+tumbld is written by [Nick Rowe](http://dcxn.com) and is available under an MIT license.
 
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/33892d7fb7e63cecbc426978a26aada9 "githalytics.com")](http://githalytics.com/nixterrimus/tumbld)
