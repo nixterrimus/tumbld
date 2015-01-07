@@ -1,82 +1,100 @@
 #!/bin/bash
 
+PAGES=5
+USE_SUBFOLDERS=0
+
 download_site()
 {
-  if [ "$USE_SUBFOLDERS" == "1" ]
-  then
-	  # Go to subfolder for organized downloading
-	  if [ ! -d "$site" ]
-    then
-		  mkdir $site
-	  fi
-	  cd $site
-  fi
-	
-	# Download the images using wget
-	wget --quiet -H -Dmedia.tumblr.com,$site.tumblr.com -r -R "*avatar*" -A "[0-9]" \
-	 -A "*index*" -A jpeg,jpg,bmp,gif,png --level=10 -nd -nc -erobots=off \
-	http://$site.tumblr.com/
-	
-	# Clean up pages needed to find images
-	rm -f 1 2 3 4 5 6 7 8 9 index.html
-	
-  if [ "$USE_SUBFOLDERS" == "1" ]
-  then
-    cd ../
-  fi
+    SITE=$1
+
+    if [[ $USE_SUBFOLDERS == 1 ]]; then
+        # Go to subfolder for organized downloading
+        mkdir -p $SITE
+        pushd $SITE &>/dev/null
+    fi
+
+    PAGES_RE=""
+    if [[ $PAGES >0 ]]; then
+        PAGES_RE="($(seq -s \| 1 ${PAGES})DUMMY)"
+    fi
+
+    # Download the images using wget
+    wget -H \
+        --domains=media.tumblr.com,$SITE.tumblr.com \
+        --recursive \
+        --reject "*avatar*" \
+        --accept-regex "index|page/${PAGES_RE}|jpeg|jpg|bmp|gif|png" \
+        --level=$PAGES \
+        --no-directories \
+        --no-clobber \
+        --no-verbose \
+        -erobots=off \
+        http://$SITE.tumblr.com/
+
+    # Clean up pages needed to find images
+    rm -f index.html $(seq -s ' '  1 ${PAGES})
+
+    if [[ $USE_SUBFOLDERS == 1 ]]; then
+        popd &>/dev/null
+    fi
 }
 
 usage()
 {
-  cat << EOF
-  usage: $0 [options] file_or_site_name
+    cat >&2 <<- EOF
+		usage: $0 [options] [site_name ...]
 
-  download images from tumblr
+		download images from tumblr
 
-  OPTIONS:
-     -h      Show this message
-     -s      Put downloaded images in subfolders
+		OPTIONS:
+		-h        Show this message
+		-s        Put downloaded images in subfolders
+		-p PAGES  Number of pages to download (default 5, use 0 for no limits)
+		-l LIST   File with number of sites to download
+
+		either site or list must be defined
 EOF
 }
 
-# Ensure that there are args
-if [ $# -lt 1 ]
-then
-  usage
-  exit $E_BADARGS
-fi
+SITES=()
 
-USE_SUBFOLDERS=0
-Sites=()
-
-# Parse args
-for var in "$@"
-do
-  if [ "$var" == "-s" ]; then
-    USE_SUBFOLDERS=1
-  else
-    Sites=("${Sites[@]}" "$var")
-  fi
+while getopts "shp:l:" opt; do
+    case $opt in
+        p)
+            PAGES=$OPTARG
+            ;;
+        l)
+            LIST=$OPTARG
+            if [ ! -f $LIST ]; then
+                echo "List file $LIST does not exist." >&2
+                exit $E_ENOENT
+            fi
+            SITES=($(paste -d ' ' -s $LIST))
+            ;;
+        s)
+            USE_SUBFOLDERS=1
+            ;;
+        h)
+            usage
+            exit
+            ;;
+        \?)
+            usage
+            exit $E_OPTERROR
+            ;;
+    esac
 done
 
-# Ensure that a site or file of sites has been set
-if [ ${#Sites[@]} -lt 1 ]
-then
-  usage
-  exit $E_BADARGS
+shift $(($OPTIND - 1))
+
+SITES+=($@)
+
+# Ensure that there is at least one site
+if [ ${#SITES[@]} -lt 1 ]; then
+    usage
+    exit $E_BADARGS
 fi
 
-# Act accordingly
-if [ -f ${Sites[0]} ]
-then
-  # Download a site of tumblrs using a file as source
-  cat ${Sites[0]} | while read site; do
-    if [[ $site != \#* ]]; then
-      download_site $site
-    fi
-  done
-else
-  # download a single tumblr
-  site=${Sites[0]}
-  download_site $site
-fi
+for SITE in ${SITES[@]}; do
+    download_site $SITE
+done

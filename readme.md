@@ -12,7 +12,7 @@ Downloads a single tumblr's images.  Make sure to pass only the base blog name a
 
 ## Downloading from many tumblrs
     
-    tumbld.sh /path/to/file
+    tumbld.sh -l /path/to/file
     
 The file should contain a list of tumblr blog name with one on each line.  For example the `file` might look like
 
@@ -20,6 +20,10 @@ The file should contain a list of tumblr blog name with one on each line.  For e
     drawingarchitecture
 
 If desired, pass in `-s` as the first argument and the photos from these blogs will be placed into subfolders.
+
+Number of pages to be downloaded can be change using the -p switch:
+
+    tumbld.sh -p 10 architectureblog
     
 # Common Problems
 
@@ -29,5 +33,3 @@ If desired, pass in `-s` as the first argument and the photos from these blogs w
 # License
 
 tumblr is written by [Nick Rowe](http://dcxn.com) and is available under an MIT license.
-
-[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/33892d7fb7e63cecbc426978a26aada9 "githalytics.com")](http://githalytics.com/nixterrimus/tumbld)
